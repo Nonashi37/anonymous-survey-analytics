@@ -1,13 +1,5 @@
-<h1>Результаты опроса</h1>
-<ul>
-    {% for response in responses %}
-        <li>
 
-            <strong>Вопрос:</strong> {{ response.question_id }} |
-            <strong>Ответ:</strong> {{ response.content }} |
-            <strong>Дата:</strong> {{ response.response_at|date:"F d, Y, H:i" }}
-        </li>
-    {% empty %}
-        <li>Нет ответов на опросы.</li>
-    {% endfor %}
-</ul>
+<h2> <a href="{% url 'singleRating' %}">Страница одного преподавателя</a> </h2>
+
+
+<h2> <a href="{% url 'overallRating' %}">Общий рейтинг</a> </h2>

@@ -208,6 +208,9 @@ class Professor(models.Model):
         managed = False
         db_table = 'professor'
 
+    def __str__(self):
+        return self.name
+
 
 class QuestionOption(models.Model):
     question = models.ForeignKey('SurveyQuestion', models.DO_NOTHING)
@@ -220,6 +223,8 @@ class QuestionOption(models.Model):
         db_table = 'question_option'
         unique_together = (('question', 'option_order'),)
 
+    def __str__(self):
+        return self.question
 
 class Student(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -258,6 +263,9 @@ class Survey(models.Model):
         managed = False
         db_table = 'survey'
 
+    def __str__(self):
+        return self.name
+
 
 class SurveyQuestion(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -272,9 +280,12 @@ class SurveyQuestion(models.Model):
         managed = False
         db_table = 'survey_question'
 
+    def __str__(self):
+        return self.text
+
 
 class SurveyResponse(models.Model):
-    prepod_id = Professor()
+    professor = models.ForeignKey(Professor, models.DO_NOTHING)
     anonymous_id = models.CharField(max_length=255, primary_key=True)
     question = models.ForeignKey(SurveyQuestion, models.DO_NOTHING)
     survey = models.ForeignKey(Survey, models.DO_NOTHING)

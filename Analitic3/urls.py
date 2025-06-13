@@ -20,5 +20,8 @@ from django.urls import path
 from main import views
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     path('', views.home, name='home'),
+    path('singleRating', views.singleRating, name='singleRating'),
+    path('overallRating', views.overallRating, name='overallRating'),
 ]

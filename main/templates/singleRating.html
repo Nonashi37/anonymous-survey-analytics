@@ -1,0 +1,94 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<h1>Выберите преподавателя</h1>
+
+<form method="get" action="">
+    <select name="professor">
+        <option value="">Все преподаватели</option>
+        {% for prof in professors %}
+            <option value="{{ prof.id }}" {% if prof.id|stringformat:"s" == selected_professor_id %}selected{% endif %}>
+                {{ prof.name }}
+            </option>
+        {% endfor %}
+    </select>
+    <button type="submit">Показать ответы</button>
+</form>
+
+<h2>Результаты опроса</h2>
+<ul>
+    {% for response in responses %}
+        <li>
+            <strong>Профессор:</strong> {{ response.professor.name }} |
+            <strong>Вопрос:</strong> {{ response.question.text }} |
+            <strong>Ответ:</strong> {{ response.content }} |
+            <strong>Дата:</strong> {{ response.response_at|date:"F d, Y, H:i" }}
+        </li>
+    {% empty %}
+        <li>Нет ответов для выбранного преподавателя.</li>
+    {% endfor %}
+</ul>
+
+<hr>
+
+
+<div class="container">
+    <canvas id="myChart"></canvas>
+</div>
+<style>
+    .container {
+        width: 900px;
+    }
+</style>
+
+
+<script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Оценка 1', 'Оценка 2', 'Оценка 3', 'Оценка 4', 'Оценка 5'],
+            datasets: [{
+                label: 'Распределение оценок',
+                data: [
+                        {{ chart_data.1|default:0 }},
+                        {{ chart_data.2|default:0 }},
+                        {{ chart_data.3|default:0 }},
+                        {{ chart_data.4|default:0 }},
+                        {{ chart_data.5|default:0 }}
+                    ],  // ← разные высоты
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(153, 102, 255, 0.6)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    stepSize: 1,
+                    title: {
+                        display: true,
+                        text: 'Количество голосов'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Оценка'
+                    }
+                }
+            }
+        }
+    });
+</script>
+<hr>
+
+{{ average_ratings }}
+
+
